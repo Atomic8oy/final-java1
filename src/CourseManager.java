@@ -21,6 +21,15 @@ public class CourseManager {
         return 0;
     }
 
+    public static int nextAvalableID(int from) {
+        for (int i = from; i < courses.length; i++) {
+            if (courses[i][0] == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static void print_courses() {
         boolean foundMatch = false;
         for (int i = 0; i < courses.length; i++) {
@@ -39,7 +48,7 @@ public class CourseManager {
         try {
             courses[nextID][0] = courseName;
             courses[nextID][1] = maxSpots + ""; // normal (String) typecast did not work. don't ask cuz it works
-            nextID++;
+            nextID = nextAvalableID(nextID);
             return true;
         } catch (Exception e) {
             System.out.println("An error occured: " + e);
@@ -58,12 +67,25 @@ public class CourseManager {
         }
     }
 
+    public static boolean remove(int courseID) {
+        try {
+            courses[courseID][0] = null;
+            courses[courseID][1] = null;
+            nextID = courseID;
+            return true;
+        } catch (Exception e) {
+            System.out.println("An error occured: " + e);
+            return false;
+        }
+    }
+
     public static void start(Scanner keyboard) {
         boolean couseLoop = true;
         boolean restart = false;
         String choice = "";
 
         while (couseLoop) {
+            int courseID = -1;
             if (!restart) {
                 menu();
                 choice = "";
@@ -97,7 +119,6 @@ public class CourseManager {
                     restart = !add(courseName, maxSpots);
                     break;
                 case "3":
-                    int courseID = -1;
                     try {
                         System.out.print("Enter couse ID: ");
                         courseID = Integer.parseInt(keyboard.nextLine());
@@ -136,6 +157,32 @@ public class CourseManager {
                     }
 
                     restart = !modify(courseID, newCourseName, newMaxSpots);
+                    break;
+                case "4":
+                    System.out.print("Enter the course ID: ");
+                    try{
+                        courseID = Integer.parseInt(keyboard.nextLine());
+                    } catch (Exception e) {
+                        System.out.println("Failed to get an integer input.");
+                        restart = false;
+                        break;
+                    }
+                    if (courseID >= 0 && courseID < 128 && courses[courseID][0] != null) {
+                        System.out.print("Are you sure that you want to remove " + courses[courseID][0] + "? (Y/N): ");
+                        String confirm = keyboard.nextLine();
+                        if (confirm.equalsIgnoreCase("Y")) {
+                            restart = !remove(courseID);
+                            if (!restart)
+                                System.out.println("Course was removed successfully.");
+                        } else {
+                            restart = false;
+                            break;
+                        }
+                    } else {
+                        System.out.println("The course was not found! Please enter a student id.");
+                        restart = false;
+                        break;
+                    }
                     break;
                 case "0":
                     couseLoop = false;
