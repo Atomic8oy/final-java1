@@ -90,7 +90,7 @@ public class CourseManager {
                         break;
                     }
                     if (maxSpots < 1) {
-                        System.out.println("This input can't less than one.");
+                        System.out.println("This input can't be less than one.");
                         restart = true;
                         break;
                     }
@@ -106,12 +106,11 @@ public class CourseManager {
                         restart = false;
                         break;
                     }
-                    if (!(courseID >= 0 && courses[courseID][0] != null)) {
+                    if (!(courseID >= 0 && courseID < 64 && courses[courseID][0] != null)) {
                         System.out.println("Course was not found! Enter a valid course id.");
                         restart = false;
                         break;
                     }
-
 
                     System.out.print("Enter course name (Current name: " + courses[courseID][0] + "): ");
                     String newCourseName = keyboard.nextLine();
@@ -120,16 +119,23 @@ public class CourseManager {
                         restart = true;
                         break;
                     }
+
                     int newMaxSpots = -1;
+                    System.out.print("Enter maximum spots: ");
                     try {
-                        System.out.print("Enter maximum spots: ");
-                        newMaxSpots = keyboard.nextInt();
-                        keyboard.nextLine();
+                        newMaxSpots = Integer.parseInt(keyboard.nextLine());
                     } catch (InputMismatchException e) {
-                        System.out.println("Please enter a valid input.");
+                        System.out.println("Failed to get an integer input.");
                         restart = true;
                         break;
                     }
+                    if (newMaxSpots < 1) {
+                        System.out.println("This input can't be less than one.");
+                        restart = true;
+                        break;
+                    }
+
+                    restart = !modify(courseID, newCourseName, newMaxSpots);
                     break;
                 case "0":
                     couseLoop = false;
