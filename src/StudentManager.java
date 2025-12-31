@@ -118,7 +118,7 @@ public class StudentManager {
                         System.out.println("Failed to get an integer input.");
                         break;
                     }
-                    if (!(id >= 0 && students[id][0] != null)) {
+                    if (!(id >= 0 && id < 128 && students[id][0] != null)) {
                         System.out.println("Student not found! Please enter a student id.");
                         restart = false;
                         break;
