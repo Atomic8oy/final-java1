@@ -149,7 +149,7 @@ public class StudentManager {
                         restart = false;
                         break;
                     }
-                    if (!(id > 1 || students[id][0] == null)) {
+                    if (id >= 0 && id < 128 && students[id][0] != null) {
                         System.out.print("Are you sure that you want to remove " + students[id][0] + "? (Y/N): ");
                         String confirm = keyboard.nextLine();
                         if (confirm.equalsIgnoreCase("Y")) {
