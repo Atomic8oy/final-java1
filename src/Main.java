@@ -11,8 +11,9 @@ public class Main {
             System.out.println("=".repeat(19) + " Main Menu " + "=".repeat(20));
             System.out.println("1.Students");
             System.out.println("2.Courses");
-            System.out.println("3.Save Data");
-            System.out.println("4.Load Data");
+            System.out.println("3.Enrollment");
+            System.out.println("4.Save Data");
+            System.out.println("5.Load Data");
             System.out.println("0.Exit");
             System.out.println("=".repeat(50));
 
@@ -23,6 +24,9 @@ public class Main {
                     break;
                 case "2":
                     CourseManager.start(keyboard);
+                    break;
+                case "3":
+                    EnrollmentManager.start(keyboard);
                     break;
                 case "0":
                     mainLoop = false;
