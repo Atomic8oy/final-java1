@@ -25,6 +25,10 @@ public class StudentManager {
         return -1;
     }
 
+    public static boolean isValidID(int id) {
+        return id >= 0 && id < 128 && students[id][0] != null;
+    }
+
     public static void print_students() {
         boolean foundMatch = false;
         for (int i = 0; i < students.length; i++) {
@@ -87,9 +91,6 @@ public class StudentManager {
                 choice = keyboard.nextLine();
             }
             switch (choice) {
-                case "0":
-                    smloop = false;
-                    break;
                 case "1":
                     print_students();
                     break;
@@ -118,7 +119,7 @@ public class StudentManager {
                         System.out.println("Failed to get an integer input.");
                         break;
                     }
-                    if (!(id >= 0 && id < 128 && students[id][0] != null)) {
+                    if (!isValidID(id)) {
                         System.out.println("Student not found! Please enter a student id.");
                         restart = false;
                         break;
@@ -149,7 +150,7 @@ public class StudentManager {
                         restart = false;
                         break;
                     }
-                    if (id >= 0 && id < 128 && students[id][0] != null) {
+                    if (isValidID(id)) {
                         System.out.print("Are you sure that you want to remove " + students[id][0] + "? (Y/N): ");
                         String confirm = keyboard.nextLine();
                         if (confirm.equalsIgnoreCase("Y")) {
@@ -164,6 +165,9 @@ public class StudentManager {
                         restart = false;
                         break;
                     }
+                    break;
+                case "0":
+                    smloop = false;
                     break;
                 case "":
                     break;

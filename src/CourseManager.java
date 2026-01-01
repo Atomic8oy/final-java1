@@ -30,6 +30,10 @@ public class CourseManager {
         return -1;
     }
 
+    public static boolean isValidID(int id) {
+        return id >= 0 && id < 64 && courses[id][0] != null;
+    }
+
     public static void print_courses() {
         boolean foundMatch = false;
         for (int i = 0; i < courses.length; i++) {
@@ -127,7 +131,7 @@ public class CourseManager {
                         restart = false;
                         break;
                     }
-                    if (!(courseID >= 0 && courseID < 64 && courses[courseID][0] != null)) {
+                    if (!isValidID(courseID)) {
                         System.out.println("Course was not found! Enter a valid course id.");
                         restart = false;
                         break;
@@ -167,7 +171,7 @@ public class CourseManager {
                         restart = false;
                         break;
                     }
-                    if (courseID >= 0 && courseID < 128 && courses[courseID][0] != null) {
+                    if (isValidID(courseID)) {
                         System.out.print("Are you sure that you want to remove " + courses[courseID][0] + "? (Y/N): ");
                         String confirm = keyboard.nextLine();
                         if (confirm.equalsIgnoreCase("Y")) {
