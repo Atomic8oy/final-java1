@@ -12,6 +12,7 @@ public class StudentManager {
         System.out.println("2.Add a student");
         System.out.println("3.Modify student");
         System.out.println("4.Remove student");
+        System.out.println("5.Check signups");
         System.out.println("0. <- Return to main menu");
         System.out.println("=".repeat(50));
     }
@@ -27,6 +28,22 @@ public class StudentManager {
 
     public static boolean isValidID(int id) {
         return id >= 0 && id < 128 && students[id][0] != null;
+    }
+
+    public static int get_student_id(Scanner keyboard) {
+        int studentID = -1;
+        System.out.print("Enter the student ID: ");
+        try{
+            studentID = Integer.parseInt(keyboard.nextLine());
+        } catch (Exception e) {
+            System.out.println("Failed to get an integer input.");
+            return -1;
+        }
+        if (isValidID(studentID)) {
+            return studentID;
+        }
+        System.out.println("Student not found! Please enter a student id.");
+        return -1;
     }
 
     public static void print_students() {
@@ -79,6 +96,12 @@ public class StudentManager {
         }
     }
 
+
+    public static String[][] get_students() {
+        return students;
+    }
+
+
     public static void start(Scanner keyboard) {
         boolean smloop = true;
         boolean restart = false;
@@ -112,18 +135,12 @@ public class StudentManager {
                     }
                     break;
                 case "3":
-                    System.out.print("Enter the student ID: ");
-                    try{
-                        id = Integer.parseInt(keyboard.nextLine());
-                    } catch (Exception e) {
-                        System.out.println("Failed to get an integer input.");
-                        break;
-                    }
-                    if (!isValidID(id)) {
-                        System.out.println("Student not found! Please enter a student id.");
+                    id = get_student_id(keyboard);
+                    if (id == -1) {
                         restart = false;
                         break;
                     }
+
                     System.out.print("Enter the new name (current: " + students[id][0] + "): ");
                     String newName = keyboard.nextLine();
                     if (newName == "") {
@@ -142,15 +159,9 @@ public class StudentManager {
                     }
                     break;
                 case "4":
-                    System.out.print("Enter the student ID: ");
-                    try{
-                        id = Integer.parseInt(keyboard.nextLine());
-                    } catch (Exception e) {
-                        System.out.println("Failed to get an integer input.");
-                        restart = false;
-                        break;
-                    }
-                    if (isValidID(id)) {
+                    id = get_student_id(keyboard);
+
+                    if (id != -1) {
                         System.out.print("Are you sure that you want to remove " + students[id][0] + "? (Y/N): ");
                         String confirm = keyboard.nextLine();
                         if (confirm.equalsIgnoreCase("Y")) {
@@ -161,7 +172,6 @@ public class StudentManager {
                             break;
                         }
                     } else {
-                        System.out.println("Student not found! Please enter a student id.");
                         restart = false;
                         break;
                     }

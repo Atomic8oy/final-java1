@@ -13,12 +13,13 @@ public class CourseManager {
         System.out.println("2.Add a course");
         System.out.println("3.Modify course");
         System.out.println("4.Remove course");
+        System.out.println("5.Check signups");
         System.out.println("0. <- Return to main menu");
         System.out.println("=".repeat(50));
     }
 
-    public static int calculate_course_signups(int courseID) {
-        return 0;
+    public static String[] get_course(int courseID) {
+        return courses[courseID];
     }
 
     public static int nextAvalableID(int from) {
@@ -34,11 +35,27 @@ public class CourseManager {
         return id >= 0 && id < 64 && courses[id][0] != null;
     }
 
+    public static int get_course_id(Scanner keyboard) {
+        int courseID = -1;
+        System.out.print("Enter couse ID: ");
+        try {
+            courseID = Integer.parseInt(keyboard.nextLine());
+        } catch (Exception e) {
+            System.out.println("Failed to get an integer input.");
+            return -1;
+        }
+        if (isValidID(courseID)) {
+            return courseID;
+        }
+        System.out.println("Course was not found! Enter a valid course id.");
+        return -1;
+    }
+
     public static void print_courses() {
         boolean foundMatch = false;
         for (int i = 0; i < courses.length; i++) {
             if (courses[i][0] != null) {
-                int remaining = Integer.parseInt(courses[i][1]) - calculate_course_signups(i);
+                int remaining = Integer.parseInt(courses[i][1]) - EnrollmentManager.get_course_signups(i);
                 System.out.println(i + "." + courses[i][0] + " | " + remaining + " / " + courses[i][1]);
                 foundMatch = true;
             }
@@ -83,6 +100,12 @@ public class CourseManager {
         }
     }
 
+
+    public static String[][] get_courses() {
+        return courses;
+    }
+
+
     public static void start(Scanner keyboard) {
         boolean couseLoop = true;
         boolean restart = false;
@@ -123,16 +146,8 @@ public class CourseManager {
                     restart = !add(courseName, maxSpots);
                     break;
                 case "3":
-                    try {
-                        System.out.print("Enter couse ID: ");
-                        courseID = Integer.parseInt(keyboard.nextLine());
-                    } catch (Exception e) {
-                        System.out.println("Failed to get an integer input.");
-                        restart = false;
-                        break;
-                    }
-                    if (!isValidID(courseID)) {
-                        System.out.println("Course was not found! Enter a valid course id.");
+                    courseID = get_course_id(keyboard);
+                    if (courseID == -1) {
                         restart = false;
                         break;
                     }
@@ -146,7 +161,7 @@ public class CourseManager {
                     }
 
                     int newMaxSpots = -1;
-                    System.out.print("Enter maximum spots: ");
+                    System.out.print("Enter maximum spots (Current: " + courses[courseID][1] + "): ");
                     try {
                         newMaxSpots = Integer.parseInt(keyboard.nextLine());
                     } catch (InputMismatchException e) {
@@ -163,15 +178,8 @@ public class CourseManager {
                     restart = !modify(courseID, newCourseName, newMaxSpots);
                     break;
                 case "4":
-                    System.out.print("Enter the course ID: ");
-                    try{
-                        courseID = Integer.parseInt(keyboard.nextLine());
-                    } catch (Exception e) {
-                        System.out.println("Failed to get an integer input.");
-                        restart = false;
-                        break;
-                    }
-                    if (isValidID(courseID)) {
+                    courseID = get_course_id(keyboard);
+                    if (courseID != -1) {
                         System.out.print("Are you sure that you want to remove " + courses[courseID][0] + "? (Y/N): ");
                         String confirm = keyboard.nextLine();
                         if (confirm.equalsIgnoreCase("Y")) {
@@ -183,7 +191,6 @@ public class CourseManager {
                             break;
                         }
                     } else {
-                        System.out.println("The course was not found! Please enter a student id.");
                         restart = false;
                         break;
                     }
