@@ -5,13 +5,15 @@ public class EnrollmentManager {
     static String[][] enrollments = new String[2048][3];
     static int nextID = 0;
 
-    // funcs to code: assign score, remove a student from a course, print signed up students in a course
+    // funcs to code: remove a student from a course
     public static void menu() {
         System.out.println("=".repeat(15) + " Enrollment Manager " + "=".repeat(15));
         System.out.println("1.Print Students");
         System.out.println("2.Print Courses");
-        System.out.println("3.Sign up a student in a course");
+        System.out.println("3.Sign up a student to a course");
         System.out.println("4.Get enrollment Information");
+        System.out.println("5.Assign score");
+        System.out.println("6.Remove student from course");
         System.out.println("0. <- Return to main menu");
         System.out.println("=".repeat(50));
     }
@@ -60,12 +62,23 @@ public class EnrollmentManager {
         }
     }
 
+    public static boolean aasign_score(int enrollmentID, float score) {
+        try {
+            enrollments[enrollmentID][2] = "" + score;
+            return true;
+        } catch (Exception e) {
+            System.out.println("An error occured: " + e);
+            return false;
+        }
+    }
+
     public static void start(Scanner keyboard) {
         boolean enrollemntLoop = true;
         boolean restart = false;
         String choice = "";
 
         while (enrollemntLoop) {
+            int id = -1;
             int courseID = -1;
             int studentID = -1;
             String[] course;
@@ -79,7 +92,7 @@ public class EnrollmentManager {
                 case "debug":
                     for (int i = 0; i < enrollments.length; i++) {
                         if (enrollments[i][0] != null) {
-                            System.out.println(i + "." + enrollments[i][0] + " | " + enrollments[i][1] + " | " + enrollments[i][2]);
+                            System.out.println(i + "." + enrollments[i][0] + ", " + enrollments[i][1] + " | " + enrollments[i][2]);
                         }
                     }
                     break;
@@ -131,7 +144,7 @@ public class EnrollmentManager {
                         break;
                     }
 
-                    int id = get_enrollment_id(courseID, studentID);
+                    id = get_enrollment_id(courseID, studentID);
                     if (id == -1) {
                         System.out.println("Enrollment was not found.");
                         restart = false;
@@ -142,6 +155,45 @@ public class EnrollmentManager {
                     student = StudentManager.get_student(studentID);
 
                     System.out.println(id + "." + course[0] + ", " + student[0] + " | " + enrollments[id][2]);
+                    break;
+                case "5":
+                    courseID = CourseManager.get_course_id(keyboard);
+                    if (courseID == -1) {
+                        restart = false;
+                        break;
+                    }
+
+                    studentID = StudentManager.get_student_id(keyboard);
+                    if (studentID == -1) {
+                        restart = true;
+                        break;
+                    }
+
+                    id = get_enrollment_id(courseID, studentID);
+                    if (id == -1) {
+                        restart = false;
+                        break;
+                    }
+
+                    student = StudentManager.get_student(studentID);
+                    course = CourseManager.get_course(courseID);
+
+                    float score;
+                    System.out.print("Enter a score to asign for " + student[0] + " on " + course[0] + ": ");
+                    try {
+                        score = Float.parseFloat(keyboard.nextLine());
+                    } catch (Exception e) {
+                        System.out.println("Failed to get an float input");
+                        restart = true;
+                        break;
+                    }
+
+                    if (score < 0 || score > 20) {
+                        restart = true;
+                        System.out.println("Score must be a float between 0 and 20");
+                    }
+
+                    restart = !aasign_score(id, score);
                     break;
                 case "":
                     break;
