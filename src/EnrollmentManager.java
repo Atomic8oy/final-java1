@@ -79,7 +79,6 @@ public class EnrollmentManager {
                         if (enrollements[i][0] != null) {
                             System.out.println(i + "." + enrollements[i][0] + " | " + enrollements[i][1] + " | " + enrollements[i][2]);
                         }
-
                     }
                     break;
                 case "1":

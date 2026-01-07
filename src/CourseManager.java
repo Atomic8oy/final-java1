@@ -100,12 +100,6 @@ public class CourseManager {
         }
     }
 
-
-    public static String[][] get_courses() {
-        return courses;
-    }
-
-
     public static void start(Scanner keyboard) {
         boolean couseLoop = true;
         boolean restart = false;
