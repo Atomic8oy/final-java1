@@ -17,6 +17,10 @@ public class StudentManager {
         System.out.println("=".repeat(50));
     }
 
+    public static String[] get_student(int studentID) {
+        return students[studentID];
+    }
+
     public static int nextAvalableID(int from) {
         for (int i = from; i < students.length; i++) {
             if (students[i][0] == null) {
