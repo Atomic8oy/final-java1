@@ -132,6 +132,12 @@ public class EnrollmentManager {
                     }
 
                     int id = get_enrollment_id(courseID, studentID);
+                    if (id == -1) {
+                        System.out.println("Enrollment was not found.");
+                        restart = false;
+                        break;
+                    }
+
                     course = CourseManager.get_course(courseID);
                     student = StudentManager.get_student(studentID);
 
