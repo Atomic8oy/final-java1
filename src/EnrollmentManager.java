@@ -146,7 +146,7 @@ public class EnrollmentManager {
 
                     id = get_enrollment_id(courseID, studentID);
                     if (id == -1) {
-                        System.out.println("Enrollment was not found.");
+                        System.out.println("This student haven't signed up to this course yet.");
                         restart = false;
                         break;
                     }
@@ -171,6 +171,7 @@ public class EnrollmentManager {
 
                     id = get_enrollment_id(courseID, studentID);
                     if (id == -1) {
+                        System.out.println("This student haven't signed up to this course yet.");
                         restart = false;
                         break;
                     }
