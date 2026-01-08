@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CourseManager {
@@ -55,7 +54,7 @@ public class CourseManager {
         boolean foundMatch = false;
         for (int i = 0; i < courses.length; i++) {
             if (courses[i][0] != null) {
-                int remaining = Integer.parseInt(courses[i][1]) - EnrollmentManager.get_course_signups(i);
+                int remaining = Integer.parseInt(courses[i][1]) - EnrollmentManager.count_course_signups(i);
                 System.out.println(i + "." + courses[i][0] + " | " + remaining + " / " + courses[i][1]);
                 foundMatch = true;
             }
@@ -158,7 +157,7 @@ public class CourseManager {
                     System.out.print("Enter maximum spots (Current: " + courses[courseID][1] + "): ");
                     try {
                         newMaxSpots = Integer.parseInt(keyboard.nextLine());
-                    } catch (InputMismatchException e) {
+                    } catch (Exception e) {
                         System.out.println("Failed to get an integer input.");
                         restart = true;
                         break;
@@ -188,6 +187,15 @@ public class CourseManager {
                         restart = false;
                         break;
                     }
+                    break;
+                case "5":
+                    courseID = get_course_id(keyboard);
+                    if (courseID == -1) {
+                        restart = false;
+                        break;
+                    }
+
+                    EnrollmentManager.get_signups(0, courseID);
                     break;
                 case "0":
                     couseLoop = false;

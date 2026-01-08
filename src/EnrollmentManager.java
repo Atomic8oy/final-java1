@@ -39,7 +39,7 @@ public class EnrollmentManager {
         return -1;
     }
 
-    public static int get_course_signups(int courseID) {
+    public static int count_course_signups(int courseID) {
         int counter = 0;
         for (int i = 0; i < enrollments.length; i++) {
             if (enrollments[i][0] != null && Integer.parseInt(enrollments[i][0]) == courseID) {
@@ -47,6 +47,22 @@ public class EnrollmentManager {
             }
         }
         return counter;
+    }
+
+    // by: 0 = course id, 1 = student id
+    public static void get_signups(int by, int id) {
+        boolean foundMatch = false;
+        for (int i = 0; i < enrollments.length; i++) {
+            if (enrollments[i][0] != null && Integer.parseInt(enrollments[i][by]) ==  id) {
+                String[] course = CourseManager.get_course(Integer.parseInt(enrollments[i][0]));
+                String[] student = StudentManager.get_student(Integer.parseInt(enrollments[i][1]));
+                System.out.println(i + "." + course[0] + ", " + student[0] + " | " + enrollments[id][2]);
+                foundMatch = true;
+            }
+        }
+        if (!foundMatch) {
+            System.out.println("No signups was found.");
+        }
     }
 
     public static boolean signup(int studentID, int courseID) {
@@ -135,7 +151,7 @@ public class EnrollmentManager {
                     }
 
                     course = CourseManager.get_course(courseID);
-                    if (Integer.parseInt(course[1]) > get_course_signups(courseID)) {
+                    if (Integer.parseInt(course[1]) > count_course_signups(courseID)) {
                         restart = !signup(studentID, courseID);
                         System.out.println("Student signed up successfuly.");
                     } else {

@@ -180,6 +180,16 @@ public class StudentManager {
                         break;
                     }
                     break;
+                case "5":
+                    id = get_student_id(keyboard);
+                    if (id == -1) {
+                        restart = false;
+                        break;
+                    }
+
+
+                    EnrollmentManager.get_signups(1, id);
+                    break;
                 case "0":
                     smloop = false;
                     break;
