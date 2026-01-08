@@ -2,20 +2,24 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static void menu() {
+        System.out.println("=".repeat(19) + " Main Menu " + "=".repeat(20));
+        System.out.println("1.Students");
+        System.out.println("2.Courses");
+        System.out.println("3.Enrollment");
+        System.out.println("4.Save Data");
+        System.out.println("5.Load Data");
+        System.out.println("0.Exit");
+        System.out.println("=".repeat(50));
+    }
+
     public void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("School Management Program");
         boolean mainLoop = true;
 
         while (mainLoop) {
-            System.out.println("=".repeat(19) + " Main Menu " + "=".repeat(20));
-            System.out.println("1.Students");
-            System.out.println("2.Courses");
-            System.out.println("3.Enrollment");
-            System.out.println("4.Save Data");
-            System.out.println("5.Load Data");
-            System.out.println("0.Exit");
-            System.out.println("=".repeat(50));
+            menu();
 
             String opCode = keyboard.nextLine();
             switch (opCode) {
