@@ -5,7 +5,6 @@ public class EnrollmentManager {
     static String[][] enrollments = new String[2048][3];
     static int nextID = 0;
 
-    // funcs to code: remove a student from a course
     public static void menu() {
         System.out.println("=".repeat(15) + " Enrollment Manager " + "=".repeat(15));
         System.out.println("1.Print Students");
@@ -62,7 +61,20 @@ public class EnrollmentManager {
         }
     }
 
-    public static boolean aasign_score(int enrollmentID, float score) {
+    public static boolean remove(int enrollmentID) {
+        try {
+            enrollments[enrollmentID][0] = null;
+            enrollments[enrollmentID][1] = null;
+            enrollments[enrollmentID][2] = null;
+            nextID = enrollmentID;
+            return true;
+        } catch (Exception e) {
+            System.out.println("An error occured: " + e);
+            return false;
+        }
+    }
+
+    public static boolean assign_score(int enrollmentID, float score) {
         try {
             enrollments[enrollmentID][2] = "" + score;
             return true;
@@ -192,10 +204,48 @@ public class EnrollmentManager {
                     if (score < 0 || score > 20) {
                         restart = true;
                         System.out.println("Score must be a float between 0 and 20");
+                        break;
                     }
 
-                    restart = !aasign_score(id, score);
+                    restart = !assign_score(id, score);
+                    if (!restart)
+                        System.out.println("Successfull.");
                     break;
+                case "6":
+                    courseID = CourseManager.get_course_id(keyboard);
+                    if (courseID == -1) {
+                        restart = false;
+                        break;
+                    }
+
+                    studentID = StudentManager.get_student_id(keyboard);
+                    if (studentID == -1) {
+                        restart = true;
+                        break;
+                    }
+
+                    id = get_enrollment_id(courseID, studentID);
+                    if (id == -1) {
+                        System.out.println("This student haven't signed up to this course yet.");
+                        restart = false;
+                        break;
+                    }
+
+                    student = StudentManager.get_student(studentID);
+                    course = CourseManager.get_course(courseID);
+
+                    System.out.println("Are you sure that you want to remove " + student[0] + " from " + course[0] + "? (Y/n): ");
+                    String confirm = keyboard.nextLine();
+                    if (confirm.equalsIgnoreCase("Y")) {
+                        restart = !remove(id);
+                        if (!restart)
+                            System.out.println("Enrollment was removed successfully.");
+                    } else {
+                        restart = false;
+                        break;
+                    }
+
+
                 case "":
                     break;
                 case "0":
