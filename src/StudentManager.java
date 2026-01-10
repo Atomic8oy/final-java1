@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class StudentManager {
 
     // name, notes
-    static String[][] students = new String[128][3];
+    static String[][] students = new String[128][2];
     static int nextID = 0;
 
     public static void menu() {
