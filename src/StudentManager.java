@@ -13,6 +13,7 @@ public class StudentManager {
         System.out.println("3.Modify student");
         System.out.println("4.Remove student");
         System.out.println("5.Check signups");
+        System.out.println("6.Print average score");
         System.out.println("0. <- Return to main menu");
         System.out.println("=".repeat(50));
     }
@@ -22,6 +23,7 @@ public class StudentManager {
     }
 
     public static int nextAvalableID(int from) {
+
         for (int i = from; i < students.length; i++) {
             if (students[i][0] == null) {
                 return i;
@@ -63,6 +65,19 @@ public class StudentManager {
         }
     }
 
+    public static void print_average(int studentID) {
+        int count = 0;
+        float score_sum = 0;
+
+        for (int i = 0; i < EnrollmentManager.enrollments.length; i++) {
+            if (EnrollmentManager.enrollments[i][0] != null && Integer.parseInt(EnrollmentManager.enrollments[i][1]) == studentID) {
+                count++;
+                score_sum += Float.parseFloat(EnrollmentManager.enrollments[i][2]);
+            }
+        }
+        System.out.println("Student's average is: " + (score_sum/count));
+    }
+
     public static boolean add(String name, String note) {
         try {
             students[nextID][0] = name;
@@ -98,11 +113,6 @@ public class StudentManager {
             System.out.println("An error occurred: " + e);
             return false;
         }
-    }
-
-
-    public static String[][] get_students() {
-        return students;
     }
 
 
@@ -189,6 +199,15 @@ public class StudentManager {
 
 
                     EnrollmentManager.get_signups(1, id);
+                    break;
+                case "6":
+                    id = get_student_id(keyboard);
+                    if (id == -1) {
+                        restart = false;
+                        break;
+                    }
+
+                    print_average(id);
                     break;
                 case "0":
                     smloop = false;
