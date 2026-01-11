@@ -87,8 +87,7 @@ public class Main {
                 }
             }
 
-            FileReader enrollmentReader = new FileReader("data/5" +
-                    "enrollments.data");
+            FileReader enrollmentReader = new FileReader("data/enrollments.data");
             Object[] enrollmentData = enrollmentReader.readAllLines().toArray();
             id = 0;
             p = 0;
